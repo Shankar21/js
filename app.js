@@ -1,1 +1,3 @@
-var t = 0;
+"use strict";
+
+console.log(window.location);
