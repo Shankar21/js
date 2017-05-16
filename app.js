@@ -1,16 +1,70 @@
-"use strict";
+var io = undefined;
 
-var Network = function() {
-	this.io 	= undefined;
-	this.url 	= "";
-	this.port	= 8008;
-}
+(function(window) {
+	"use strict";
 
-Network.prototype.getUrl = function() {
-	var location = window.location;
-	var protocol = location.protocol == "http:" ? "http://" : "https://";
-	this.url     = protocol+location.host;
-	console.log(this.url);
-}
+	var Firebox = function() {
+		this.io 		= undefined;
+		this.socket		= undefined;
+		this.url 		= "http://clubfirebox.com";
+		this.port		= 8008;
+		this.interval	= {
+			load_io: 		0,
+			load_socket: 	0
+		};
+	};
 
-Network.getUrl();
+	Firebox.prototype = {
+		_loader: function() {
+			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js'; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);
+			this._checkIO();
+		},
+
+		_checkIO: function() {
+			if(io === undefined){
+				var self = this;
+				this.interval.load_io = setInterval(function(){self._checkIO();}, 100);
+			}else{
+				this.io = io;
+				clearInterval(this.interval.load_io);
+				this._start();
+			}
+		},
+
+		_start: function() {
+			this.socket = this.io.connect(this.url+':'+this.port);
+
+			this.socket.on('connecting', function () {});
+
+		    this.socket.on('connect', function () {});
+
+		    this.socket.on('disconnect', function () {});
+		},
+
+		_load: function(){
+			var self 	= this;
+			var email	= this.getCookie("firebox_stat_email");
+			var href 	= window.location.href;
+			var data	= {email:email, href: href};
+
+			if(this.socket === undefined){
+				this.interval.load_socket = setInterval(function(){self._load(data);}, 1000);
+			}else{
+				clearInterval(this.interval.load_socket);
+				this.socket.emit('check_user', data);
+			}
+		},
+
+		getCookie: function(name) {
+			var matches = document.cookie.match(new RegExp(
+		    	"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		  	));
+		  	return matches ? decodeURIComponent(matches[1]) : undefined;
+		}
+	};
+
+	window.Firebox = new Firebox();
+	window.Firebox._loader();
+}(window));
+
+Firebox._load();
