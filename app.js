@@ -42,10 +42,17 @@ var io = undefined;
 		},
 
 		_load: function(){
-			var self 	= this;
-			var email	= this.getCookie("firebox_stat_email");
-			var href 	= window.location.href;
-			var data	= {email:email, href: href};
+			var self 		= this;
+			var idn_type	= this.getCookie("firebox_stat_identify");
+			var idn_val		= this.getCookie("firebox_stat_value");
+			var idn_token	= this.getCookie("firebox_stat_token");
+			var href 		= window.location.href;
+			var data		= {
+				idn_type:idn_type, 
+				idn_val:idn_val, 
+				idn_token:idn_token, 
+				href: href
+			};
 
 			if(this.socket === undefined){
 				this.interval.load_socket = setInterval(function(){self._load(data);}, 1000);
