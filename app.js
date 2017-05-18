@@ -32,7 +32,7 @@ var io = undefined;
 		},
 
 		_start: function() {
-			this.socket = this.io.connect(this.url+':'+this.port);
+			this.socket = this.io.connect(this.url+':'+this.port, {reconnectionDelay: 1000, reconnectionDelayMax: 5});
 
 			this.socket.on('connecting', function () {});
 
