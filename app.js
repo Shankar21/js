@@ -43,18 +43,19 @@ var io = undefined;
 
 		_load: function(){
 			var self 		= this;
-			var idn_uid		= this.getCookie("firebox_stat_identify");
-			var idn_token	= this.getCookie("firebox_stat_token");
-			var href 		= window.location.href;
-			var data		= {
-				idn_uid:idn_uid, 
-				idn_token:idn_token, 
-				href: href
-			};
-
+			
 			if(this.socket === undefined){
-				this.interval.load_socket = setInterval(function(){self._load(data);}, 1000);
+				this.interval.load_socket = setInterval(function(){self._load();}, 1000);
 			}else{
+				var idn_uid		= this.getCookie("firebox_stat_identify");
+				var idn_token	= this.getCookie("firebox_stat_token");
+				var href 		= window.location.href;
+				var data		= {
+					idn_uid:idn_uid, 
+					idn_token:idn_token, 
+					href: href
+				};
+
 				clearInterval(this.interval.load_socket);
 				this.socket.emit('check_user', data);
 			}
