@@ -43,13 +43,11 @@ var io = undefined;
 
 		_load: function(){
 			var self 		= this;
-			var idn_type	= this.getCookie("firebox_stat_identify");
-			var idn_val		= this.getCookie("firebox_stat_value");
+			var idn_uid		= this.getCookie("firebox_stat_identify");
 			var idn_token	= this.getCookie("firebox_stat_token");
 			var href 		= window.location.href;
 			var data		= {
-				idn_type:idn_type, 
-				idn_val:idn_val, 
+				idn_uid:idn_uid, 
 				idn_token:idn_token, 
 				href: href
 			};
