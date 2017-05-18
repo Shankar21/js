@@ -47,12 +47,10 @@ var io = undefined;
 			if(this.socket === undefined){
 				this.interval.load_socket = setInterval(function(){self._load();}, 1000);
 			}else{
-				var idn_uid		= this.getCookie("firebox_stat_identify");
-				var idn_token	= this.getCookie("firebox_stat_token");
 				var href 		= window.location.href;
 				var data		= {
-					idn_uid:idn_uid, 
-					idn_token:idn_token, 
+					idn_uid:this.getCookie("firebox_stat_identify"), 
+					idn_token:this.getCookie("firebox_stat_token"), 
 					href: href
 				};
 
