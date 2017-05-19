@@ -23,7 +23,7 @@ var io = undefined;
 		_checkIO: function() {
 			if(io === undefined){
 				var self = this;
-				this.interval.load_io = setInterval(function(){self._checkIO();}, 100);
+				this.interval.load_io = setInterval(function(){self._checkIO();}, 1000);
 			}else{
 				this.io = io;
 				clearInterval(this.interval.load_io);
@@ -32,7 +32,7 @@ var io = undefined;
 		},
 
 		_start: function() {
-			this.socket = this.io.connect(this.url+':'+this.port, {reconnectionDelay: 1000, reconnectionDelayMax: 5});
+			this.socket = this.io.connect(this.url+':'+this.port, {reconnection: true, reconnectionAttempts: 5, reconnectionDelay: 2000, reconnectionDelayMax: 2200});
 
 			this.socket.on('connecting', function () {});
 
