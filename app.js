@@ -38,7 +38,9 @@ var io = undefined;
 
 		    this.socket.on('connect', function () {});
 
-		    this.socket.on('disconnect', function () {});
+		    this.socket.on('disconnect', function () {
+		    	this.socket.emit('disc', {});
+		    });
 		},
 
 		_load: function(){
